@@ -43,6 +43,7 @@ app.use('/api/admission', require('./src/routes/admissionRoutes'));
 app.use('/api/admin', require('./src/routes/adminRoutes'));
 app.use('/api/student', require('./src/routes/studentRoutes'));
 app.use('/api/upload', require('./src/routes/uploadRoutes'));
+app.use('/api/inquiries', require('./src/routes/inquiryRoutes'));
 
 // Error Handler
 app.use(require('./src/middleware/errorMiddleware'));

@@ -5,6 +5,7 @@ const Payment = require('../models/Payment');
 const Complaint = require('../models/Complaint');
 const Leave = require('../models/Leave');
 const AuditLog = require('../models/AuditLog');
+const Inquiry = require('../models/Inquiry');
 const jwt = require('jsonwebtoken');
 
 // 1. Auth
@@ -75,6 +76,16 @@ const getDashboardStats = async (req, res) => {
     const activeComplaints = await Complaint.countDocuments({ status: 'Open' });
     const pendingLeaves = await Leave.countDocuments({ status: 'Pending' });
 
+    const totalInquiries = await Inquiry.countDocuments();
+    const newInquiries = await Inquiry.countDocuments({ status: 'New' });
+    const contactedLeads = await Inquiry.countDocuments({ status: 'Contacted' });
+    const convertedLeads = await Inquiry.countDocuments({ status: 'Converted' });
+
+    const totalAdmissionRequests = await Student.countDocuments();
+    const pendingRequests = await Student.countDocuments({ status: 'Pending Verification' });
+    const approvedRequests = await Student.countDocuments({ status: 'Active' });
+    const rejectedRequests = await Student.countDocuments({ status: 'Rejected' });
+
     res.json({
       success: true,
       data: {
@@ -84,7 +95,15 @@ const getDashboardStats = async (req, res) => {
         monthlyCollection,
         pendingRent: pendingRent > 0 ? pendingRent : 0,
         activeComplaints,
-        pendingLeaves
+        pendingLeaves,
+        totalInquiries,
+        newInquiries,
+        contactedLeads,
+        convertedLeads,
+        totalAdmissionRequests,
+        pendingRequests,
+        approvedRequests,
+        rejectedRequests
       }
     });
   } catch (error) {
